@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Entity
 @Data
 @Table(name = "treinadores")
@@ -15,6 +17,13 @@ import lombok.NoArgsConstructor;
 public class Treinador {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     private String nome;
+    private int capacidadeMochila;
+
+    @OneToMany // Um Treinador pode ter muitos Pokemons
+    private List<Pokemon> pokemons;
+
+    @OneToMany // Um Treinador pode ter muitas Pokebolas
+    private List<Pokebola> pokebolas;
 }

@@ -15,9 +15,15 @@ import lombok.NoArgsConstructor;
 public class Pokemon {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     private String nome;
     private String tipo;
     private int level;
     private String ataque;
+    
+    @ManyToOne // Muitos Pokemons podem pertencer a um Treinador
+    private Treinador treinador;
+
+    @OneToOne // Um Pokemon pode estar contido em apenas uma Pokebola, e uma Pokebola pode conter apenas um Pokemon
+    private Pokebola pokebola;
 }
