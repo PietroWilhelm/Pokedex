@@ -5,26 +5,25 @@ import fiap.com.br.Pokedex.validation.NivelPokemon;
 import jakarta.validation.constraints.NotBlank;
 
 
-public class PokemonRequest {
-
+public record PokemonRequest (
     @NotBlank(message = "O nome do Pokémon é obrigatório")
-    String nome;
+    String nome,
 
     @NotBlank(message = "O tipo do Pokémon é obrigatório")
-    String tipo;
+    String tipo,
 
-    @NivelPokemon // Validação personalizada para garantir que o nível do Pokémon esteja entre 1 e 100
-    Integer level;
+    @NivelPokemon
+    int level,
 
     @NotBlank(message = "O ataque do Pokémon é obrigatório")
-    String ataque;
-
+    String ataque
+) {
     public Pokemon toEntity() {
         return Pokemon.builder()
-                .nome(this.nome)
-                .tipo(this.tipo)
-                .level(this.level)
-                .ataque(this.ataque)
+                .nome(nome)
+                .tipo(tipo)
+                .level(level)
+                .ataque(ataque)
                 .build();
     }
 }
