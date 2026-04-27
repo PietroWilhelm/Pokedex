@@ -1,0 +1,156 @@
+{
+  "info": {
+    "_postman_id": "93c1c4a8-7b47-40af-af8e-3ce2a488b2ce",
+    "name": "Pokebolas",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "getAll",
+      "id": "6c23e474-a928-4ac9-99d6-9c0b91560c27",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/pokebolas",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "pokebolas"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "getAllById",
+      "id": "740ab753-0108-4268-84a6-f5e3126c2748",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/pokebolas/",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "pokebolas",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "getByTreinadorId",
+      "id": "ba3277cf-378e-4fdc-8a8e-0cccfe07b8b9",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/pokebolas/search?treinadorId=1",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "pokebolas",
+            "search"
+          ],
+          "query": [
+            {
+              "key": "treinadorId",
+              "value": "1",
+              "uuid": "084605d0-c3af-406d-a288-d12111523095"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "getByTipoPokebola",
+      "id": "5911553a-9232-4619-9ead-1e07da133265",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/pokebolas/search?tipo=GREAT",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "pokebolas",
+            "search"
+          ],
+          "query": [
+            {
+              "key": "tipo",
+              "value": "GREAT",
+              "uuid": "54c3617c-7545-4f8a-b178-a188ff452248"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "New Request",
+      "id": "2814fabd-b0ca-44a5-b3d4-f219dbab42ee",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/pokebolas",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "pokebolas"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "New Request",
+      "id": "6c3cb53c-9536-4cab-b058-0220dab56039",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/pokebolas/",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "pokebolas",
+            ""
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}

@@ -1,0 +1,186 @@
+{
+  "info": {
+    "_postman_id": "48375f9b-db75-4955-b9a2-a5b590cfc1aa",
+    "name": "Pokemons",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "getAll",
+      "id": "ec69f8ed-5707-451e-ae31-8ffc1b661fbf",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/pokemons",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "pokemons"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "getAllById",
+      "id": "d63f9011-d101-45bf-9180-4899be4d9154",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/pokemons/1",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "pokemons",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "getByTipo",
+      "id": "4ec69b13-03b4-4188-8bdb-c813ef780a8f",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/pokemons/search?tipo=ELETRICO",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "pokemons",
+            "search"
+          ],
+          "query": [
+            {
+              "key": "tipo",
+              "value": "ELETRICO",
+              "uuid": "7c3c577b-2418-4fcd-a74b-7d660c7ad457"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "getByNome",
+      "id": "41541681-05d6-48b9-9519-938ef774e23b",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/pokemons/search?nome=Raichu",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "pokemons",
+            "search"
+          ],
+          "query": [
+            {
+              "key": "nome",
+              "value": "Raichu",
+              "uuid": "fada2ce4-10a0-4b05-a58c-d5d5bb91f8eb"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create",
+      "id": "fef43dcd-5a4d-4f95-bd63-7702f7c2e93b",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"id\": 1,\r\n    \"nome\": \"Raichu\",\r\n    \"tipo\": \"ELETRICO\",\r\n    \"level\": 30,\r\n    \"ataque\": \"Choque do Trovão\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/pokemons",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "pokemons"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Update",
+      "id": "a6863cdb-b366-4932-bb2d-25f23b5ad57d",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"id\": 1,\r\n    \"nome\": \"Pikachu\",\r\n    \"tipo\": \"ELETRICO\",\r\n    \"level\": 25,\r\n    \"ataque\": \"Choque do Trovão\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/pokemons/",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "pokemons",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Delete",
+      "id": "b7e26bfd-4e7b-44b9-ba8a-28da0ef52bce",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/pokemons/",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "pokemons",
+            ""
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}

@@ -1,0 +1,157 @@
+{
+  "info": {
+    "_postman_id": "3e80d359-a5db-47c9-9791-09e827720968",
+    "name": "Treinadores",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "getAll",
+      "id": "153ca2db-42e4-4075-bcb9-701e2ca719f4",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/treinadores",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "treinadores"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "getByNome",
+      "id": "13781de7-685f-41bc-8090-5b675967cb78",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/treinadores/search?nome=Ash",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "treinadores",
+            "search"
+          ],
+          "query": [
+            {
+              "key": "nome",
+              "value": "Ash"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "getByID",
+      "id": "0d625104-7198-4a16-a7c1-42b3c720c540",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/treinadores/1",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "treinadores",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "create",
+      "id": "784f27d3-7eda-4b33-bccd-4fda8ad0d468",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/treinadores",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "treinadores"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "update",
+      "id": "c8a70983-3d2c-4289-98e9-ab3023111471",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/treinadores/",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "treinadores",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "delete",
+      "id": "e6b94456-fd5d-4e7b-8369-1cb2e449118c",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/treinadores/",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "treinadores",
+            ""
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
