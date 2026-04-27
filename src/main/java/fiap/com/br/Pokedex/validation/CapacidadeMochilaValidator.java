@@ -2,22 +2,28 @@ package fiap.com.br.Pokedex.validation;
 
 
 
+import fiap.com.br.Pokedex.repository.PokebolaRepository;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class CapacidadeMochilaValidator extends ConstraintValidator<CapacidadeMochila, Long> {
+
+public class CapacidadeMochilaValidator implements ConstraintValidator<CapacidadeMochila, Long> {
 
     @Autowired
     private PokebolaRepository repository;
 
     @Override
     public boolean isValid(Long treinadorId, ConstraintValidatorContext context) {
-        if (treinadorId == null) return true; // Deixa para o @NotNull tratar
+        // Se o ID for nulo, a validação passa aqui (o @NotNull cuidará disso no DTO)
+        if (treinadorId == null) {
+            return true;
+        }
 
-        // Conta quantas pokebolas este treinador possui no banco
-        long totalPokebolas = repository.countByTreinadorId(treinadorId);
+        // Chamada ao método que definimos no Passo 1
+        long total = repository.countByTreinadorId(treinadorId);
 
-        return totalPokebolas < 6; // Retorna true se ainda houver espaço
+        // Se o total for menor que 6, retorna true (válido). Se for 6 ou mais, retorna false (inválido).
+        return total < 6;
     }
 }
