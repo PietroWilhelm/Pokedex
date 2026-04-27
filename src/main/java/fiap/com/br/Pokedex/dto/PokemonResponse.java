@@ -3,7 +3,7 @@ package fiap.com.br.Pokedex.dto;
 import fiap.com.br.Pokedex.entity.Pokemon;
 
 public record PokemonResponse (
-    long id,
+    Long id,
     String nome,
     String tipo,
     int level,

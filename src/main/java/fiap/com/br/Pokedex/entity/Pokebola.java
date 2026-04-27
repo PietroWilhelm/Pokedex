@@ -19,7 +19,7 @@ public class Pokebola {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nome;
-    private String tipo;
+    private String tipo; // Ex: "COMUM", GREAT "ULTRA", "MASTER"
 
     @ManyToOne // Muitas Pokebolas podem pertencer a um Treinador, mas uma Pokebola só pode pertencer a um Treinador
     @JoinColumn(name = "treinador_id") // Especifica a coluna de junção para a relação ManyToOne

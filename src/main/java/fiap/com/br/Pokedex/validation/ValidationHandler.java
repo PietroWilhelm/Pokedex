@@ -7,25 +7,40 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 @Slf4j
 @RestControllerAdvice
-public class ValidationHandler { // Classe de tratamento global de exceções para lidar com erros de validação
+public class ValidationHandler {
 
-    // Classe interna para representar a resposta de erro de validação
     public record validationErrorResponse(String field, String message) {
         public validationErrorResponse(FieldError error){
             this(error.getField(), error.getDefaultMessage());
         }
     }
 
-    // Método para lidar com exceções de validação e retornar uma lista de erros de validação
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(code = HttpStatus.BAD_REQUEST)
     public List<validationErrorResponse> handler(MethodArgumentNotValidException exception){
-        return exception.getFieldErrors().stream()
+
+        // 1. Mapeia os erros de campos (ex: @NotBlank, @NotNull)
+        List<validationErrorResponse> fieldErrors = exception.getBindingResult()
+                .getFieldErrors()
+                .stream()
                 .map(validationErrorResponse::new)
                 .toList();
+
+        // 2. Mapeia os erros globais (ex: @NivelParaCaptura que está no topo do Record)
+        List<validationErrorResponse> globalErrors = exception.getBindingResult()
+                .getGlobalErrors()
+                .stream()
+                .map(error -> new validationErrorResponse(error.getObjectName(), error.getDefaultMessage()))
+                .toList();
+
+        // 3. Une as duas listas para retornar tudo ao Postman
+        return Stream.concat(fieldErrors.stream(), globalErrors.stream()).toList();
     }
 }
