@@ -1,6 +1,11 @@
 # 🐾 Pokedex API
 API REST desenvolvida em Spring Boot para gerenciar o ecossistema de treinadores, pokémons e capturas (pokébolas), inspirada no universo Pokémon.
 
+# Membros
+Pietro Paranhos Wilhelm - Rm561378
+Felipe Monte - Rm562019
+Pedro de Matos - Rm564093
+
 ## 📋 Objetivos do Projeto
 Gerenciamento Completo: CRUD de Treinadores, Pokémons e Pokébolas.
 
