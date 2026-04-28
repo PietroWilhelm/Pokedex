@@ -1,10 +1,10 @@
 package fiap.com.br.Pokedex.controller;
 
-import fiap.com.br.Pokedex.dto.TreinadorRequest;
 import fiap.com.br.Pokedex.dto.TreinadorResponse;
+import fiap.com.br.Pokedex.entity.Treinador;
 import fiap.com.br.Pokedex.service.TreinadorService;
-import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -14,30 +14,41 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/treinadores")
-@RequiredArgsConstructor
+@Slf4j
 public class TreinadorController {
 
-    private final TreinadorService service;
-
-    @PostMapping
-    public ResponseEntity<TreinadorResponse> create(@RequestBody @Valid TreinadorRequest request) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.create(request));
-    }
+    @Autowired
+    private TreinadorService service;
 
     @GetMapping
-    public ResponseEntity<Page<TreinadorResponse>> findAll(@PageableDefault(size = 10) Pageable pageable) {
-        return ResponseEntity.ok(service.findAll(pageable));
+    public Page<Treinador> listAll(@PageableDefault(size = 10) Pageable pageable) {
+        return service.getAllTreinadores(pageable);
     }
 
-    @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable Long id) {
-        service.delete(id);
+    @PostMapping
+    public ResponseEntity<Treinador> createTreinador(@RequestBody Treinador treinador) {
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(service.addTreinador(treinador));
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<TreinadorResponse> getById(@PathVariable Long id) {
-        return ResponseEntity.ok(service.findById(id));
+    @GetMapping("{id}")
+    public ResponseEntity<Treinador> getById(@PathVariable Long id) {
+        log.info("Obtendo dados do treinador {}", id);
+        return ResponseEntity.ok(service.getTreinadorById(id));
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        log.info("Deletando treinador com id {}", id);
+        service.deleteTreinador(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("{id}")
+    public ResponseEntity<Treinador> update(@PathVariable Long id, @RequestBody Treinador treinador) {
+        log.info("Atualizando treinador com id {} com os dados {}", id, treinador);
+        return ResponseEntity.ok(service.updateTreinador(id, treinador));
     }
 
     @GetMapping("/search")
@@ -45,14 +56,5 @@ public class TreinadorController {
             @RequestParam String nome,
             @PageableDefault Pageable pageable) {
         return ResponseEntity.ok(service.findByNome(nome, pageable));
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<TreinadorResponse> update(
-            @PathVariable Long id,
-            @RequestBody @Valid TreinadorRequest request) {
-
-        TreinadorResponse response = service.update(id, request);
-        return ResponseEntity.ok(response);
     }
 }

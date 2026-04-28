@@ -1,61 +1,58 @@
 package fiap.com.br.Pokedex.service;
 
-import fiap.com.br.Pokedex.dto.PokemonRequest;
-import fiap.com.br.Pokedex.dto.PokemonResponse;
-import fiap.com.br.Pokedex.dto.TreinadorRequest;
 import fiap.com.br.Pokedex.dto.TreinadorResponse;
 import fiap.com.br.Pokedex.entity.Treinador;
 import fiap.com.br.Pokedex.repository.TreinadorRepository;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
-@RequiredArgsConstructor
 public class TreinadorService {
 
-    private final TreinadorRepository repository;
+    @Autowired
+    private TreinadorRepository repository;
 
-    public TreinadorResponse create(TreinadorRequest request) {
-        var treinador = repository.save(request.toEntity());
-        return TreinadorResponse.fromEntity(treinador);
+    // Pega todos os treinadores com paginação
+    public Page<Treinador> getAllTreinadores(Pageable pageable) {
+        return repository.findAll(pageable);
     }
 
-    public Page<TreinadorResponse> findAll(Pageable pageable) {
-        return repository.findAll(pageable).map(TreinadorResponse::fromEntity);
+    // Adicona um novo treinador
+    public Treinador addTreinador(Treinador treinador) {
+        return repository.save(treinador);
     }
 
-    public TreinadorResponse findById(Long id) {
-        return repository.findById(id)
-                .map(TreinadorResponse::fromEntity)
-                .orElseThrow(() -> new RuntimeException("Treinador não encontrado"));
-    }
-
-    public void delete(Long id) {
+    // Exclusão do treinador
+    public void deleteTreinador(Long id) {
+        findTreinadorById(id);
         repository.deleteById(id);
     }
 
+    // Atualização completa do treinador
+    public Treinador updateTreinador(Long id, Treinador newTreinador) {
+        findTreinadorById(id);
+        newTreinador.setId(id);
+        return repository.save(newTreinador);
+    }
+
+    public Treinador getTreinadorById(Long id) {
+        return findTreinadorById(id);
+    }
+
+    // Busca específica por nome
     public Page<TreinadorResponse> findByNome(String nome, Pageable pageable) {
         return repository.findByNomeContainingIgnoreCase(nome, pageable)
                 .map(TreinadorResponse::fromEntity);
     }
 
-    public TreinadorResponse update(Long id, TreinadorRequest request) {
-        // Busca o treinador ou lança erro se não existir
-        Treinador treinadorExistente = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Treinador não encontrado com o ID: " + id));
-
-        // Atualiza os campos
-        treinadorExistente.setNome(request.nome());
-        treinadorExistente.setCapacidadeMochila(request.capacidadeMochila());
-
-        // Salva a entidade atualizada
-        Treinador treinadorAtualizado = repository.save(treinadorExistente);
-
-        // Retorna o DTO de resposta
-        return TreinadorResponse.fromEntity(treinadorAtualizado);
+    // método auxiliar para encontrar treinador por ID ou lançar exceção
+    private Treinador findTreinadorById(Long id) {
+        return repository.findById(id).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Treinador com id " + id + " não encontrado")
+        );
     }
-
-
 }

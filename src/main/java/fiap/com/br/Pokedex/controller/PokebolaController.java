@@ -2,9 +2,11 @@ package fiap.com.br.Pokedex.controller;
 
 import fiap.com.br.Pokedex.dto.PokebolaRequest;
 import fiap.com.br.Pokedex.dto.PokebolaResponse;
+import fiap.com.br.Pokedex.entity.Pokebola;
 import fiap.com.br.Pokedex.service.PokebolaService;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -14,32 +16,40 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/pokebolas")
-@RequiredArgsConstructor
+@Slf4j
 public class PokebolaController {
 
-    private final PokebolaService service;
-
-    @PostMapping
-    public ResponseEntity<PokebolaResponse> create(@RequestBody @Valid PokebolaRequest request) {
-        // Dispara as validações customizadas: @CapacidadeMochila e @NivelParaCaptura
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.create(request));
-    }
+    @Autowired
+    private PokebolaService service;
 
     @GetMapping
-    public ResponseEntity<Page<PokebolaResponse>> findAll(@PageableDefault(size = 5) Pageable pageable) {
-        return ResponseEntity.ok(service.findAll(pageable));
+    public Page<Pokebola> listAll(@PageableDefault(size = 5) Pageable pageable) {
+        return service.getAllPokebolas(pageable);
     }
 
+    @PostMapping
 
-    @DeleteMapping("/{id}")
+    public ResponseEntity<PokebolaResponse> create(@RequestBody @Valid PokebolaRequest request) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.createPokemon(request));
+    }
+
+    @GetMapping("{id}")
+    public ResponseEntity<Pokebola> getById(@PathVariable Long id) {
+        log.info("Obtendo dados da pokébola {}", id);
+        return ResponseEntity.ok(service.getPokebolaById(id));
+    }
+
+    @DeleteMapping("{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        service.delete(id);
+        log.info("Deletando pokébola com id {}", id);
+        service.deletePokebola(id);
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<PokebolaResponse> getById(@PathVariable Long id) {
-        return ResponseEntity.ok(service.findById(id));
+    @PutMapping("{id}")
+    public ResponseEntity<Pokebola> updatePokebola(@PathVariable Long id, @RequestBody Pokebola pokebola) {
+        log.info("Atualizando pokébola id {}", id);
+        return ResponseEntity.ok(service.updatePokebola(id, pokebola));
     }
 
     @GetMapping("/search")
@@ -54,7 +64,6 @@ public class PokebolaController {
         if (tipo != null) {
             return ResponseEntity.ok(service.findByTipo(tipo, pageable));
         }
-        return ResponseEntity.ok(service.findAll(pageable));
+        return ResponseEntity.ok(service.getAllPokebolas(pageable).map(PokebolaResponse::fromEntity));
     }
-
 }

@@ -1,5 +1,6 @@
 package fiap.com.br.Pokedex.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,8 +23,10 @@ public class Treinador {
     private int capacidadeMochila;
 
     @OneToMany // Um Treinador pode ter muitos Pokemons
+    @JsonIgnore
     private List<Pokemon> pokemons;
 
     @OneToMany // Um Treinador pode ter muitas Pokebolas
+    @JsonIgnore
     private List<Pokebola> pokebolas;
 }

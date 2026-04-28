@@ -1,5 +1,6 @@
 package fiap.com.br.Pokedex.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,8 +23,10 @@ public class Pokemon {
     private String ataque;
     
     @ManyToOne // Muitos Pokemons podem pertencer a um Treinador
+    @JsonIgnore
     private Treinador treinador;
 
     @OneToOne // Um Pokemon pode estar contido em apenas uma Pokebola, e uma Pokebola pode conter apenas um Pokemon
+    @JsonIgnore
     private Pokebola pokebola;
 }

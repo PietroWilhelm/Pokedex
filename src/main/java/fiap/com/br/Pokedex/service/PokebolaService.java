@@ -3,24 +3,38 @@ package fiap.com.br.Pokedex.service;
 import fiap.com.br.Pokedex.dto.PokebolaRequest;
 import fiap.com.br.Pokedex.dto.PokebolaResponse;
 import fiap.com.br.Pokedex.entity.Pokebola;
+import fiap.com.br.Pokedex.entity.Pokemon;
+import fiap.com.br.Pokedex.entity.Treinador;
 import fiap.com.br.Pokedex.repository.PokebolaRepository;
 import fiap.com.br.Pokedex.repository.PokemonRepository;
 import fiap.com.br.Pokedex.repository.TreinadorRepository;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
-@RequiredArgsConstructor // O Lombok cria o construtor para os campos 'final'
 public class PokebolaService {
 
-    private final PokebolaRepository pokebolaRepository;
-    private final TreinadorRepository treinadorRepository;
-    private final PokemonRepository pokemonRepository;
+    @Autowired
+    private PokebolaRepository pokebolaRepository;
 
-    // CREATE (Seguindo seu modelo, mas incluindo busca de relações e DTO)
-    public PokebolaResponse create(PokebolaRequest request) {
+    @Autowired
+    private TreinadorRepository treinadorRepository;
+
+    @Autowired
+    private PokemonRepository pokemonRepository;
+
+    // Método para listar todas as pokébolas com paginação
+    public Page<Pokebola> getAllPokebolas(Pageable pageable) {
+        return pokebolaRepository.findAll(pageable);
+    }
+
+    // Metodo para criar uma nova pokébola a partir de um Request DTO
+    public PokebolaResponse createPokemon(PokebolaRequest request) {
+
         var treinador = treinadorRepository.findById(request.treinadorId())
                 .orElseThrow(() -> new RuntimeException("Treinador não encontrado"));
 
@@ -28,44 +42,45 @@ public class PokebolaService {
                 .orElseThrow(() -> new RuntimeException("Pokémon não encontrado"));
 
         Pokebola pokebola = request.toEntity(treinador, pokemon);
+
         return PokebolaResponse.fromEntity(pokebolaRepository.save(pokebola));
     }
 
-    // FIND ALL com Paginação
-    public Page<PokebolaResponse> findAll(Pageable pageable) {
-        return pokebolaRepository.findAll(pageable)
-                .map(PokebolaResponse::fromEntity);
+    // Método para obter uma pokébola por ID
+    public Pokebola getPokebolaById(Long id) {
+        return findPokebolaById(id);
     }
 
-    public PokebolaResponse findById(Long id) {
-        return pokebolaRepository.findById(id)
-                .map(PokebolaResponse::fromEntity)
-                .orElseThrow(() -> new RuntimeException("Pokébola não encontrada com o ID: " + id));
-    }
-
-    // DELETE
-    public void delete(Long id) {
+    // Método para deletar uma pokébola por ID
+    public void deletePokebola(Long id) {
+        findPokebolaById(id);
         pokebolaRepository.deleteById(id);
     }
 
-    // UPDATE
-    public PokebolaResponse update(Long id, PokebolaRequest request) {
-        Pokebola existingPokebola = pokebolaRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Pokébola não encontrada"));
+    // Método para atualizar os dados de uma pokébola por ID
+    public Pokebola updatePokebola(Long id, Pokebola newPokebola) {
+       findPokebolaById(id);
 
-        existingPokebola.setNome(request.nome());
-        existingPokebola.setTipo(request.tipo());
-
-        return PokebolaResponse.fromEntity(pokebolaRepository.save(existingPokebola));
+        newPokebola.setId(id);
+        return pokebolaRepository.save(newPokebola);
     }
 
+    // Método para buscar pokébolas por treinador
     public Page<PokebolaResponse> findByTreinador(Long treinadorId, Pageable pageable) {
         return pokebolaRepository.findByTreinadorId(treinadorId, pageable)
                 .map(PokebolaResponse::fromEntity);
     }
 
+    // Método para buscar pokébolas por tipo
     public Page<PokebolaResponse> findByTipo(String tipo, Pageable pageable) {
         return pokebolaRepository.findByTipoIgnoreCase(tipo, pageable)
                 .map(PokebolaResponse::fromEntity);
+    }
+
+    // Método auxiliar para encontrar uma pokébola por ID ou lançar uma exceção se não for encontrada
+    private Pokebola findPokebolaById(Long id) {
+        return pokebolaRepository.findById(id).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Pokébola com id " + id + " não encontrada")
+        );
     }
 }
