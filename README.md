@@ -186,7 +186,7 @@ JSON
 {
 
   "nome": "Ash Ketchum Ketchum",
-  "capacidadeMochila": 10
+  "capacidadeMochila": 6
   
 }
 
